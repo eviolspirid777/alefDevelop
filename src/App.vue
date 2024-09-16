@@ -1,7 +1,7 @@
 <template>
   <div class="alef">
     <header class="alef-header">
-      <AlefLogo class="alef-header-logo" v-if="true"></AlefLogo>
+      <AlefLogo class="alef-header-logo"></AlefLogo>
       <nav class="alef-header-nav-bar">
         <RouterLink to="/form">Форма</RouterLink>
         <RouterLink to="/">Превью</RouterLink>
@@ -19,7 +19,20 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { onMounted } from 'vue';
+
 import AlefLogo from './components/AlefLogo.vue';
+
+import { usePersonalDataStore } from "@/stores/personalDataStore";
+
+const personalStore = usePersonalDataStore();
+
+onMounted(() => {
+  const storedUserInfo = localStorage.getItem('userInformation');
+  if (storedUserInfo) {
+    personalStore.userInformation = JSON.parse(storedUserInfo);
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -44,7 +57,7 @@ import AlefLogo from './components/AlefLogo.vue';
     &-nav-bar {
       display: flex;
       position: absolute;
-      left: calc(50% - 24px);
+      left: calc(50% - 80px);
       flex-flow: row nowrap;
       gap: 0px 15px;
 
@@ -63,6 +76,7 @@ import AlefLogo from './components/AlefLogo.vue';
 
   &-footer {
     position: absolute;
+    z-index: 0;
     display: flex;
     align-items: center;
     justify-content: center;
