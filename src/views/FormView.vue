@@ -44,7 +44,7 @@
       </div>
     </div>
   </div>
-  <Notification v-if="notificationMessage" :message="notificationMessage" type="success" />
+  <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType" />
 </template>
 <script lang="ts" setup>
 import {ref, computed, onMounted} from "vue"
@@ -61,6 +61,7 @@ const age = ref("");
 const children = ref<{name:String, age: any}[]|Object[]>([]);
 
 const notificationMessage = ref("");
+const notificationType = ref("")
 
 onMounted(() => {
   if(localStorage.getItem('userInformation')) {
@@ -97,10 +98,21 @@ const saveForm = () => {
   personalStore.userInformation = { username: username.value, age: age.value, children: children.value };
   localStorage.setItem('userInformation', JSON.stringify(personalStore.userInformation));
   
-  notificationMessage.value = "Данные успешно сохранены!";
-  setTimeout(() => {
-    notificationMessage.value = "";
-  }, 3000);
+  let checker = children.value.every(el => el.name !== "" && el.age !== "");
+  if(checker) {
+    notificationMessage.value = "Данные успешно сохранены!";
+    notificationType.value = "success"
+    setTimeout(() => {
+      notificationMessage.value = "";
+    }, 3000);
+  }
+  else {
+    notificationMessage.value = "Не все поля заполнены!";
+    notificationType.value = "error"
+    setTimeout(() => {
+      notificationMessage.value = "";
+    }, 3000);
+  }
 }
 </script>
 <style lang="scss">
