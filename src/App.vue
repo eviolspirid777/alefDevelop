@@ -59,7 +59,7 @@ onMounted(() => {
       position: absolute;
       left: calc(50% - 80px);
       flex-flow: row nowrap;
-      gap: 0px 15px;
+      gap: 0px 20px;
 
       & a {
         text-decoration: none;
@@ -67,7 +67,7 @@ onMounted(() => {
         width: 51px;
         height: 24px;
         font-weight: 400;
-        font-size: 13px;
+        font-size: 16px;
         line-height: 24px;
         color: rgba(17, 17, 17, 0.48);
       }

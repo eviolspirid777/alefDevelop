@@ -94,7 +94,7 @@ const checkData = computed(() => {
           background-color: #F1F1F1;
           font-size: 16px;
           font-weight: 700;
-          line-height: 24px;
+          line-height: 45px;
           text-align: left;
         }
       }
