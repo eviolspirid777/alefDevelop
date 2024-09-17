@@ -17,7 +17,13 @@
       <div class="alef-form-box-children-data">
         <div class="alef-form-box-children-data-header">
           <h2>Дети (макс.5)</h2>
-          <CustomButton v-if="isDisabled" @click="addChild">Добавить ребенка</CustomButton>
+          <CustomButton v-if="isDisabled" @click="addChild">
+            <div class="add-button">
+              <span class="add-button-plus-symbol">+</span>
+              &nbsp;
+              <span class="add-button-text">Добавить ребенка</span>
+            </div>
+          </CustomButton>
         </div>
         <div
           v-for="(child,key) in children"
@@ -197,5 +203,21 @@ const saveForm = () => {
   gap: 20px;
   justify-content: center;
   align-items: center;
+}
+
+.add-button {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  &-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+  }
+  &-plus-symbol {
+    font-size: 24px;
+  }
 }
 </style>
