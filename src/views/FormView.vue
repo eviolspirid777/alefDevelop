@@ -47,29 +47,30 @@
   <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType" />
 </template>
 <script lang="ts" setup>
-import {ref, computed, onMounted} from "vue"
+import {shallowRef, ref, computed, onMounted} from "vue"
 import CustomInput from "@/components/CustomInput.vue"
 import CustomButton from "@/components/CustomButton.vue";
 import { usePersonalDataStore } from "@/stores/personalDataStore";
 import Notification from "@/components/NotificationComponent.vue"
+import { type Child } from "@/types/ChildType";
+import { type Parent } from "@/types/ParentType";
 
 const personalStore = usePersonalDataStore();
 
+const username = shallowRef<string | undefined>("");
+const age = shallowRef("");
+const children = ref<Child[]|Object[]>([]);
 
-const username = ref("");
-const age = ref("");
-const children = ref<{name:String, age: any}[]|Object[]>([]);
-
-const notificationMessage = ref("");
-const notificationType = ref("")
+const notificationMessage = shallowRef("");
+const notificationType = shallowRef("")
 
 onMounted(() => {
   if(localStorage.getItem('userInformation')) {
     const storedUserInfo = localStorage.getItem('userInformation');
-    personalStore.userInformation = JSON.parse(storedUserInfo);
+    personalStore.userInformation = JSON.parse(storedUserInfo!);
   }
   if(Object.keys(personalStore.userInformation).length > 1) {
-    const data = personalStore.userInformation;
+    const data = personalStore.userInformation as Parent;
     username.value = data.username;
     age.value = data.age;
     children.value = data.children;
@@ -77,10 +78,7 @@ onMounted(() => {
 });
 
 const isDisabled = computed(() => {
-  if(children.value.length > 4) {
-    return false;
-  }
-  return true
+  return children.value.length > 4 ?  false : true;
 })
 
 const sliceUser = (key: number) => {
@@ -91,14 +89,14 @@ const addChild = () => {
   if(children.value === undefined) {
     children.value = []
   }
-  children.value.push({ name: "", age: ""})
+  children.value.push({ name: "", age: ""} as Child)
 }
 
 const saveForm = () => {
   personalStore.userInformation = { username: username.value, age: age.value, children: children.value };
   localStorage.setItem('userInformation', JSON.stringify(personalStore.userInformation));
   
-  let checker = children.value.every(el => el.name !== "" && el.age !== "");
+  let checker = (children.value as Child[]).every(el => el.name !== "" && el.age !== "");
   if(checker) {
     notificationMessage.value = "Данные успешно сохранены!";
     notificationType.value = "success"

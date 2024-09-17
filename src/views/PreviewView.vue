@@ -28,16 +28,16 @@
 <script setup lang="ts">
 import { usePersonalDataStore } from "@/stores/personalDataStore";
 import {ref, computed} from "vue"
+import { type Parent } from "@/types/ParentType";
 
 const store = usePersonalDataStore();
 
-const user = ref<{age:string, name: string, children: {age:string,name:string}[]}| {}>(store.userInformation)
+const user = ref<Parent| {}>(store.userInformation)
 
 const checkData = computed(() => {
-  if(localStorage.getItem("userInformation") !== null || Object.keys(store.userInformation).length > 1) {
-    return true;
-  }
-  return false;
+  return localStorage.getItem("userInformation") !== null || Object.keys(store.userInformation).length > 1 ? 
+    true :
+    false;
 })
 </script>
 <style lang="scss" scoped>
