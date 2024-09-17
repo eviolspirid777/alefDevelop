@@ -67,7 +67,7 @@ onMounted(() => {
         width: 51px;
         height: 24px;
         font-weight: 400;
-        font-size: 16px;
+        font-size: 14px;
         line-height: 24px;
         color: rgba(17, 17, 17, 0.48);
       }
